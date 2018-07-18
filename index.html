@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+  <head>
+    <meta charset="utf-8">
+    <title>Ajax Try</title>
+    <script type="text/javascript">
+
+    var cont;
+    var data;
+
+    function onLoad()
+    {
+      cont = document.getElementById("cont");
+      data = new Array();
+    }
+
+    function test()
+    {
+      var request = new requestAjax();
+      request.onreadystatechange = function()
+      {
+        if(request.readyState == 4 && request.status==200)
+        {
+          if(request.responseXML != null)
+          {
+            data[0] = request.responseXML.getElementsByTagName("nombre").item(0);
+            cont.innerHTML="Nombre: "+data[0].firstChild.nodeValue+"<br/>"
+          }
+        }
+      }
+      request.open("GET","http://localhost/AjaxTry/dat.xml",true);
+      request.send();
+    }
+
+    function requestAjax()
+    {
+      try {
+        var request = new XMLHttpRequest();
+      } catch (error1)
+      {
+        try {
+          var request = ActiveXObject("Msxm12.XMLTTP");
+        } catch (erroe2)
+        {
+          try {
+            var request = ActiveXObject("Microsoft.XMLHTTP");
+          } catch (error3)
+          {
+            var request = false;
+          }
+        }
+      }
+      return request;
+    }
+
+    </script>
+
+  </head>
+
+  <body onload="onLoad()">
+
+    <p id="cont"></p>
+    <input type="button" value="Hacer request desde XML" onclick="test()">
+
+  </body>
+
+</html>
